@@ -178,7 +178,7 @@ h1,h2,h3{font-family:var(--tit);font-weight:700;text-transform:uppercase;line-he
 
 <section class="hero" id="inicio">
   <div class="hero-media" aria-hidden="true">
-    <img id="hero-poster" src="assets/img/hero_poster_movil.jpg" alt="" fetchpriority="high">
+    <picture><source media="(min-width:901px)" srcset="assets/img/hero_poster_pc.webp"><img id="hero-poster" src="assets/img/hero_poster_movil.webp" alt="" fetchpriority="high" width="720" height="960"></picture>
     <video id="hero-video" muted loop playsinline preload="none"></video>
   </div>
   <div class="hero-txt">
@@ -205,9 +205,9 @@ h1,h2,h3{font-family:var(--tit);font-weight:700;text-transform:uppercase;line-he
     <div class="clase-lista" id="clase-lista"></div>
   </div>
   <div class="clase-fotos">
-    <img src="assets/img/foto_1.jpg" alt="" loading="lazy" data-alt="alt1">
-    <img src="assets/img/foto_2.jpg" alt="" loading="lazy" data-alt="alt2">
-    <img src="assets/img/foto_3.jpg" alt="" loading="lazy" data-alt="alt3">
+    <img src="assets/img/foto_1.webp" alt="" loading="lazy" data-alt="alt1">
+    <img src="assets/img/foto_2.webp" alt="" loading="lazy" data-alt="alt2">
+    <img src="assets/img/foto_3.webp" alt="" loading="lazy" data-alt="alt3">
   </div>
 </div></section>
 
@@ -232,7 +232,7 @@ h1,h2,h3{font-family:var(--tit);font-weight:700;text-transform:uppercase;line-he
       <div class="fila" id="fila-precio"><div class="k" data-t="k_precio"></div><div class="precio" id="precio"></div></div>
       <div class="acciones"><a class="btn btn-oro" data-registro href="#"><span data-t="cta"></span><span class="flecha">→</span></a></div>
     </div>
-    <div class="panel-foto"><img src="assets/img/foto_4.jpg" alt="" loading="lazy" data-alt="alt4"></div>
+    <div class="panel-foto"><img src="assets/img/foto_4.webp" alt="" loading="lazy" data-alt="alt4"></div>
   </div>
 </div></section>
 
@@ -252,7 +252,7 @@ h1,h2,h3{font-family:var(--tit);font-weight:700;text-transform:uppercase;line-he
 </div></section>
 
 <section class="cierre">
-  <img src="assets/img/foto_5.jpg" alt="" loading="lazy">
+  <img src="assets/img/foto_5.webp" alt="" loading="lazy">
   <div class="wrap">
     <h2 data-t="cierre_h"></h2>
     <p data-t="cierre_p"></p>
@@ -385,7 +385,6 @@ pintar();
 /* portada en video: horizontal en el computador, vertical en el celular */
 (function () {
   const pc = matchMedia('(min-width:901px)').matches, v = document.getElementById('hero-video');
-  document.getElementById('hero-poster').src = 'assets/img/' + (pc ? 'hero_poster_pc.jpg' : 'hero_poster_movil.jpg');
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   v.src = 'assets/video/' + (pc ? 'hero_pc.mp4' : 'hero_movil.mp4');
   v.addEventListener('playing', () => v.classList.add('lista'), { once: true });
