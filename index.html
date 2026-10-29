@@ -32,7 +32,7 @@ h1,h2,h3{font-family:var(--tit);font-weight:700;text-transform:uppercase;line-he
 .top .wrap{display:flex;align-items:center;justify-content:space-between;height:82px}
 .top img{height:50px;width:auto}
 .idioma{display:flex;gap:4px;background:rgba(255,255,255,.12);border-radius:999px;padding:4px}
-.idioma button{font:700 12px/1 var(--txt);letter-spacing:1px;color:#fff;background:transparent;border:0;border-radius:999px;padding:8px 12px;cursor:pointer}
+.idioma button{font:700 12px/1 var(--txt);letter-spacing:1px;color:#fff;background:transparent;border:0;border-radius:999px;padding:14px 14px;min-width:44px;cursor:pointer}
 .idioma button[aria-pressed=true]{background:#fff;color:var(--negro)}
 
 /* portada: video horizontal a todo lo ancho (PC) / video arriba y texto debajo (celular) */
@@ -118,13 +118,13 @@ h1,h2,h3{font-family:var(--tit);font-weight:700;text-transform:uppercase;line-he
 
 /* preguntas */
 .faq{max-width:860px}
-.faq details{border-top:1px solid var(--linea);padding:18px 0}
+.faq details{border-top:1px solid var(--linea);padding:6px 0}
 .faq details:last-child{border-bottom:1px solid var(--linea)}
-.faq summary{list-style:none;cursor:pointer;font:600 19px/1.35 var(--txt);display:flex;justify-content:space-between;gap:16px}
+.faq summary{list-style:none;cursor:pointer;font:600 19px/1.35 var(--txt);display:flex;justify-content:space-between;align-items:center;gap:16px;min-height:44px;padding:12px 0}
 .faq summary::-webkit-details-marker{display:none}
 .faq summary::after{content:"+";font:400 28px/1 var(--txt);color:var(--oro)}
 .faq details[open] summary::after{content:"–"}
-.faq details p{margin:12px 0 0;color:var(--gris)}
+.faq details p{margin:0 0 14px;color:var(--gris)}
 .faq a{color:var(--oro);font-weight:600}
 
 /* cierre y pie */
@@ -142,10 +142,6 @@ h1,h2,h3{font-family:var(--tit);font-weight:700;text-transform:uppercase;line-he
 .fija{position:fixed;left:0;right:0;bottom:0;z-index:20;display:none;padding:12px 14px calc(12px + env(safe-area-inset-bottom,0px));background:rgba(11,11,12,.94);backdrop-filter:blur(8px);border-top:1px solid rgba(255,255,255,.1)}
 .fija .btn{width:100%;padding:16px 10px;font-size:15px}
 
-/* revisión (solo con ?revision) */
-.rev{position:fixed;right:14px;top:96px;z-index:30;background:#fff;border:2px solid var(--oro);border-radius:12px;padding:14px;font-size:13px;width:250px;box-shadow:0 18px 40px -16px rgba(0,0,0,.4)}
-.rev b{display:block;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--oro);margin-bottom:8px}
-.rev label{display:flex;align-items:center;gap:8px;margin:6px 0}
 
 @media (max-width:900px){
   .clase{grid-template-columns:1fr}.clase-fotos{order:-1}
@@ -168,7 +164,6 @@ h1,h2,h3{font-family:var(--tit);font-weight:700;text-transform:uppercase;line-he
   .fila{flex-direction:column;gap:6px}.fila .k{flex:none}
   .fija{display:block}
   .pie{padding-bottom:84px}
-  .rev{top:auto;bottom:90px;right:10px;width:220px}
 }
 </style>
 </head>
@@ -274,14 +269,11 @@ h1,h2,h3{font-family:var(--tit);font-weight:700;text-transform:uppercase;line-he
 <div class="fija"><a class="btn btn-oro" data-registro href="#"><span data-t="cta"></span></a></div>
 
 <script>
-/* ===== Configuración (revisar antes de publicar) ===== */
 const CFG = {
-  // 28-10 (reunión del 27-10): el registro va al formulario 'Tryout Juventus Season 2026-2027' (programa 91243), el mismo del competitivo
   playmetrics: 'https://app.playmetrics.com/signup?clubToken=TG9naW4tQ2x1Yi52MS0xNTU5LTE3NzgyNDg2MzF8WXg0em9XQmFxNkQ4d0MrMzN4WnlmeFVWbFlDdXYwaGZtR3VYU0hVNWVLTT0=&program_id=91243',
-  pixel: '',            // en jacademylasvegas.com el píxel 1648361370138038 y el evento Lead (WPCode 8150) ya están en todo el sitio
-  // POR CONFIRMAR con Alessandro: el programa de PlayMetrics no dice dónde entrena Little Zebras; la Pre-Academy de LV es en Garside
+  pixel: '',
   lugar: 'Garside Middle School', dir: '300 S Torrey Pines Dr, Las Vegas, NV 89107',
-  precios: false        // POR CONFIRMAR: USD 480 la temporada de otoño (24-sep → 24-dic); ¿precio para quien entra ahora?
+  precios: false
 };
 
 const T = {
@@ -354,7 +346,8 @@ const T = {
 const qs = new URLSearchParams(location.search);
 const leer = k => { try { return localStorage.getItem('lz_' + k); } catch (e) { return null; } };
 const guardar = (k, v) => { try { localStorage.setItem('lz_' + k, v); } catch (e) {} };
-let lang = qs.get('lang') || leer('lang') || ((navigator.language || '').toLowerCase().startsWith('es') ? 'es' : 'en');
+const idioma = v => { v = String(v || '').toLowerCase().slice(0, 2); return v === 'es' || v === 'en' ? v : null; };
+let lang = idioma(qs.get('lang')) || idioma(leer('lang')) || ((navigator.language || '').toLowerCase().startsWith('es') ? 'es' : 'en');
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
 function enlace() {   // UTM del anuncio → PlayMetrics, para saber de dónde vino cada inscripción
@@ -380,20 +373,13 @@ function pintar() {
 
 document.addEventListener('click', e => {
   const b = e.target.closest('.idioma button');
-  if (b) { lang = b.dataset.lang; guardar('lang', lang); pintar(); return; }
-  if (e.target.closest('[data-registro]')) {   // Lead: en WordPress ya lo manda el WPCode 8150 al tocar un enlace de PlayMetrics
-    if (CFG.pixel && window.fbq) fbq('track', 'Lead', { content_name: 'Little Zebras' });
+  if (b) { lang = idioma(b.dataset.lang) || 'en'; guardar('lang', lang); pintar(); return; }
+  if (e.target.closest('[data-registro]')) {
+    if (CFG.pixel && window.fbq) fbq('track', 'Lead', { content_name: 'Little Zebras' });   // en WordPress el Lead lo manda el sitio
     if (window.gtag) gtag('event', 'generate_lead', { program: 'little_zebras' });
   }
 });
 
-/* panel de revisión (solo con ?revision) */
-if (qs.has('revision')) {
-  const r = document.createElement('div'); r.className = 'rev';
-  r.innerHTML = `<b>Vista de revisión</b><label><input type="checkbox" id="rv-pre"> Mostrar precio (USD 480)</label><div style="color:#5d5a55;font-size:12px;margin-top:8px">El precio está apagado hasta confirmar cuánto paga quien entra ahora.</div>`;
-  document.body.appendChild(r);
-  r.querySelector('#rv-pre').onchange = e => { CFG.precios = e.target.checked; pintar(); };
-}
 pintar();
 
 /* portada en video: horizontal en el computador, vertical en el celular */
